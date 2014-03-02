@@ -2,7 +2,7 @@ package com.metability.instamessage;
 
 import java.util.Scanner;
 
-import com.metability.instamessage.command.Command;
+import com.metability.instamessage.command.CommandFactory;
 
 public class MessageApp {
 	
@@ -12,8 +12,8 @@ public class MessageApp {
 	}
 
 	private static void execute() {
-		Command command = new Command();
 		Scanner sc = new Scanner(System.in);
+		CommandFactory factory = CommandFactory.getInstance();
 		for (prompt(); sc.hasNextLine(); prompt()) {
 		    String line = sc.nextLine();
 
@@ -21,7 +21,7 @@ public class MessageApp {
 				break;
 			}
 
-			command.execute(line);
+			factory.getCommand(line).execute();
 		}
 		sc.close();
 	}

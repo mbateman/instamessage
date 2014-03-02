@@ -16,7 +16,7 @@ public class Users {
 		return getInstance();
 	}
 	
-	private static Users getInstance() {
+	public static Users getInstance() {
 		if (users == null) {
 			users = new Users();
 		}

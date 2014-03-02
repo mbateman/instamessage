@@ -1,4 +1,6 @@
 instamessage
 ============
 
-Messaging app exercise
+Messaging app exercise.
+
+Run from the command line using mvn exec:java.

@@ -9,17 +9,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.metability.instamessage.command.Command;
+import com.metability.instamessage.command.CommandFactory;
 
 public class CommandTest {
 	
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	private Command command;
+	private CommandFactory factory;
 
 	@Before
 	public void setUp() {
 	    System.setOut(new PrintStream(outContent));
-	    command = new Command();
+	    factory = CommandFactory.getInstance();
 	}
 
 	@After
@@ -35,16 +35,16 @@ public class CommandTest {
 		
 	@Test public void 
 	userPostsAndReadsMessage() {
-		command.execute("Michael -> Hi There!");
-		command.execute("Michael");
+		factory.getCommand("Michael -> Hi There!").execute();
+		factory.getCommand("Michael").execute();
 		assertEquals("Hi There! (0 seconds ago)\n", outContent.toString());
 	}
 
 	@Test public void 
 	userStartsFollowing() {
-		command.execute("Michelle -> Hi There!");
-		command.execute("Michael follows Michelle");
-		command.execute("Michelle");
+		factory.getCommand("Michelle -> Hi There!").execute();
+		factory.getCommand("Michael follows Michelle").execute();
+		factory.getCommand("Michelle").execute();
 		assertEquals("Hi There! (0 seconds ago)\n", outContent.toString());
 	}
 
@@ -73,27 +73,27 @@ public class CommandTest {
 		Bob - at least it's sunny (2 minutes ago) 
 		Alice - I love the weather today (5 minutes ago) */
 
-		command.execute("Alice -> I love the weather today", Timeline.minutesAgo(5));
-		command.execute("Bob -> Oh, we lost!", Timeline.minutesAgo(1));
-		command.execute("Bob -> at least it's sunny", Timeline.minutesAgo(2));
-		command.execute("Alice");
+		factory.getCommand("Alice -> I love the weather today", Timeline.minutesAgo(5)).execute();
+		factory.getCommand("Bob -> Oh, we lost!", Timeline.minutesAgo(1)).execute();
+		factory.getCommand("Bob -> at least it's sunny", Timeline.minutesAgo(2)).execute();
+		factory.getCommand("Alice").execute();
 		assertEquals("I love the weather today (5 minutes ago)\n", outContent.toString());
 		outContent.reset();
-		command.execute("Bob");
+		factory.getCommand("Bob").execute();
 		assertEquals(
 				"Oh, we lost! (1 minute ago)\n"
 				+ "at least it's sunny (2 minutes ago)\n", outContent.toString());
 		outContent.reset();
-		command.execute("Charlie -> I'm in New York today! Anyone wants to have a coffee?", Timeline.secondsAgo(2));
-		command.execute("Charlie follows Alice");
-		command.execute("Charlie wall");
+		factory.getCommand("Charlie -> I'm in New York today! Anyone wants to have a coffee?", Timeline.secondsAgo(2)).execute();
+		factory.getCommand("Charlie follows Alice").execute();
+		factory.getCommand("Charlie wall").execute();
 		assertEquals(
 				"Charlie - I'm in New York today! Anyone wants to have a coffee? (2 seconds ago)\n"
 				+ "Alice - I love the weather today (5 minutes ago)\n", outContent.toString());
 		outContent.reset();
-		command.execute("Charlie follows Bob");
+		factory.getCommand("Charlie follows Bob").execute();
 		Thread.sleep(1000);
-		command.execute("Charlie wall");
+		factory.getCommand("Charlie wall").execute();
 		assertEquals(
 				"Charlie - I'm in New York today! Anyone wants to have a coffee? (3 seconds ago)\n" +
 				"Bob - Oh, we lost! (1 minute ago)\n" + 
