@@ -16,9 +16,8 @@ public class PostCommand implements Command {
 	}
 
 	@Override
-	public String execute() {
+	public void execute() {
 		postMessage(command, time);
-		return "";
 	}
 
 	private void postMessage(String line, long time) {

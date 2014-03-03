@@ -12,11 +12,10 @@ public class UserMessagesCommand implements Command {
 	}
 	
 	@Override
-	public String execute() {
+	public void execute() {
 		String username = command.split(" ")[0];
 		User user = Optional.fromNullable(Users.getInstance().findUser(username)).or(
 		Users.getInstance().addUser(new User(username)));
 		MessageLister.listMessages(user.getMessages(), false);
-		return "";
 	}
 }

@@ -13,9 +13,8 @@ public class FollowCommand implements Command {
 	}
 
 	@Override
-	public String execute() {
+	public void execute() {
 		follow(command.split(" ")[0], command.split(" ")[2]);
-		return "";
 	}
 
 	private void follow(String follower, String followee) {

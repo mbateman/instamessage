@@ -13,11 +13,11 @@ public class WallCommand implements Command {
 	}
 
 	@Override
-	public String execute() {
+	public void execute() {
 		String username = command.split(" ")[0];
-		User user = Optional.fromNullable(Users.getInstance().findUser(username)).or(
-		Users.getInstance().addUser(new User(username)));
+		Users users = Users.getInstance();
+		User user = Optional.fromNullable(
+			users.findUser(username)).or(users.addUser(new User(username)));
 		MessageLister.listAllMessages(user);
-		return "";
 	}
 }
